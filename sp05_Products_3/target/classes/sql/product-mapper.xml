@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	
+<mapper namespace="ProductMapper">
+<!-- 
+1. ResultMap :: selectRM(id)
+2. sql구문의 재사용성 사용
+3. getItemList, getItem(특정한 아이디를 포함하는 기능...와일드카드 사용)
+ -->
+ 	
+ 	<sql id="select-product">
+ 		select
+ 		id, name, maker, price
+ 		from myproduct
+ 	</sql>
+ 	
+ 	 
+ 	<select id="getAllProductList" parameterType="product" resultType="product">
+ 		<include refid="select-product" />
+ 		<where>
+ 			<if test="name != null">
+ 				name like '%${name}%'
+ 			</if>
+ 			<if test="maker != null">
+ 				or maker like '%${maker}%'
+ 			</if>
+ 			<if test="id != 0">
+ 				or id = #{id}
+ 			</if>
+ 			
+ 			
+ 		</where>
+ 	</select>
+ 	
+ 	<!-- 1. id는 db에서 자동증가되는 값. 2. 그 값이 pk라면 insert문은 반드시 아래처럼 작성 -->
+ 	<insert id="addProduct" parameterType="product" useGeneratedKeys="true" keyProperty="id">
+ 		insert into myproduct
+ 		(name, maker, price)
+ 		values (#{name}, #{maker}, #{price})
+ 	</insert>
+ 
+</mapper>
+	
+	

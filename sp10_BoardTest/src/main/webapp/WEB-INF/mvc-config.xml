@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    
+	
+	<mvc:resources location="/resources/" 	mapping="/**"/>
+    <mvc:annotation-driven />
+    
+    <!-- 파일 처리를 위한  Resolver-->   
+    
+    
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="order" value="1" />	
+	</bean>
+	
+		<!--  MultipartFile 등록-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="-1" />
+	</bean>
+	
+	
+	<!-- BeanNameViewwresolver 등록 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />				
+	</bean>
+	
+	<bean name="boardInput" class="org.springframework.web.servlet.view.JstlView">
+	 	<property name="url" value="board/boardInsert.jsp"></property>
+	 </bean>
+	
+	<!-- Transaction 처리 Bean 추가  :: Annotation 기반으로 Transaction 처리방법-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- DownLoadView 처리 -->
+	<bean name="downloadView" class="util.DownloadView" />
+	
+	<context:component-scan base-package="com.encore.spring.controller"/> 
+	
+</beans>
+
+
+

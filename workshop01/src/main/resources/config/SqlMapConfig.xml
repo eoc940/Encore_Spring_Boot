@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="config/jdbc.properties"/>
+	
+	<settings>		
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<package name="com.encore.spring.domain"/>		<!-- myProduct -->
+	</typeAliases>
+	
+	<environments default="aa">
+		<environment id="aa">
+			<transactionManager type="JDBC"/>
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="${JDBC.Driver}"/>
+				<property name="url" value="${JDBC.ConnectionURL}"/>
+				<property name="username" value="${JDBC.Username}"/>
+				<property name="password" value="${JDBC.Password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="mapper/book-mapper.xml"/>
+		<!--  <mapper resource="mapper/user-mapper.xml"/>-->
+	</mappers>
+</configuration>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

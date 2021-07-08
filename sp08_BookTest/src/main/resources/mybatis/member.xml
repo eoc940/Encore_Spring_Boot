@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MemberMapper">
+	<select id="loginCheck" parameterType="memberVO" resultType="memberVO">
+		SELECT
+		id, pw, name, nickname, email, homepage, address, hobby
+		FROM member
+		WHERE id = #{id} AND pw = #{pw}
+	</select>
+	<insert id="add" parameterType="memberVO">
+		INSERT
+		INTO member (id, pw, name, nickname, email, homepage, address, hobby)
+		VALUES (#{id}, #{pw}, #{name}, #{nickName}, #{email}, 
+		#{homePage}, #{address}, #{hobby}) 
+	</insert>
+</mapper>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

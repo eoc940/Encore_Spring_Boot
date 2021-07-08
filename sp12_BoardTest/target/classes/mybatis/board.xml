@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="sql.board.mapper">
+
+	<insert id="write" parameterType="boardVO" useGeneratedKeys="true" keyProperty="no"><!-- auto increment 되는 table,vo는 이같은 속성 넣어준다 -->
+		insert into springboard (title, content, w_date, id)
+		values (#{title}, #{content}, curdate(), #{memberVO.id})
+	</insert>
+	
+	<!-- 특정 게시글이 입력된 날짜를 디비에서 받아오는 쿼리문 -->
+	<select id="selectByNoForDate" resultType="string" parameterType="int">
+		select w_date
+		from springboard
+		where no=#{value}
+	</select>
+	
+	<resultMap type="boardVO" id="boardListRM">
+		<id property="no" column="no"/>
+		<result property="title" column="title" />
+		<result property="count" column="count" />
+		<result property="writeDate" column="w_date" />
+		<result property="memberVO.id" column="id" />
+		<association property="memberVO" javaType="memberVO">
+			<id column="id" property="id"/>
+			<result column="password" property="password"/>
+			<result column="name" property="name"/>
+			<result column="address" property="address"/>
+		</association>
+	</resultMap>
+	
+	<select id="getBoardList" resultMap="boardListRM">
+		select 
+		b.no, b.title, b.count, b.w_date, b.id, m.password, m.name, m.address
+		from springboard b, member m
+		where b.id = m.id
+		order by no desc
+	</select>
+	
+	<resultMap type="boardVO" id="boardRM" extends="boardListRM">
+		<result column="content" property="content"/>
+	</resultMap>
+	
+	<select id="showContent" resultMap="boardRM" parameterType="int">
+		select 
+		b.no, b.title, b.count, b.w_date, b.content, m.id, m.name
+		from springboard b, member m
+		where b.id = m.id and b.no=#{value}
+		order by no desc
+	</select>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from springboard
+		where no=#{value}
+	</delete>
+	
+	<update id="updateBoard" parameterType="boardVO">
+		update springboard 
+		set title=#{title}, content=#{content}
+		where no=#{no}
+	</update>
+	
+	<update id="plusCount" parameterType="int">
+		update springboard
+		set count = count+1
+		where no=#{value}
+	</update>  
+</mapper>
+
+
+
+
+
+
+
+

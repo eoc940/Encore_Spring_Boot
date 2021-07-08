@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="sql.member.mapper">
+	<select id="selectUser" parameterType="memberVO" resultType="memberVO">
+		select
+		id, password, name, address
+		from member
+		where id=#{id}
+		<if test="password != null">
+			and password like #{password}
+		</if>
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+

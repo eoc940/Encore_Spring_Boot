@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 완벽한 행태의 CRUD가 다 들어있는 sqlMapper 이게 돌아간다면 MyBatis Framework에단에 문제가 없는 
+	것으로 본다 일종의 단위테스트...MyBatisAppTest.java 가 바로 MyBatis Mapper 단위테스트 -->
+
+<mapper namespace="EmpMapper">
+	<sql id="select-semp">	
+		select e.id id, e.name name, e.mailid mailid, e.start_date start_date, 
+		e.manager_id manager_id, e.title title,  e.dept_id dept_id, d.name dept_name,                     
+		ifnull(e.salary,0.0) salary, ifnull(e.commission_pct,0.0) commission_pct 
+	</sql>
+	 <select id="findAllEmployees" resultType="employeeDto">
+		<include refid="select-semp" />                                      
+		from s_emp e join  s_dept d on e.dept_id=d.dept_id order by e.id  
+	 </select>
+
+	  <select id="findEmployeeById" parameterType="int" resultType="employeeDto">
+		<include refid="select-semp" />                                         
+		from s_emp e join  s_dept d on e.dept_id=d.dept_id
+		 where e.id= #{id} order by e.id 
+	 </select>
+
+	  <select id="findAllTitles" resultType="employeeDto">
+		select distinct title from s_emp      
+	 </select>
+
+	<select id="getEmployeesTotal" resultType="int">
+    	SELECT COUNT(*) FROM s_emp
+    </select>
+     <select id="findLikeEmployees" parameterType="string"
+      resultType="employeeDto" >
+		select id, name, mailid, start_date, manager_id, title, dept_id    ,                      
+		ifnull(salary,0.0) salary, ifnull(commission_pct,0.0) commission_pct                                    
+		from s_emp where name like  concat('%',#{name},'%')  
+	</select>
+     <insert id="addEmployee" parameterType="employeeDto" >
+    		INSERT INTO s_emp	     
+			(id, name, mailid, start_date, manager_id, title, dept_id, SALARY, 
+			COMMISSION_PCT)
+			VALUES(#{id},
+            #{name},#{mailid},#{start_date},
+				<if test="manager_id != '' and manager_id != null and  manager_id != 0 " >
+				#{manager_id}
+			</if>       		
+			<if test="manager_id == '' or manager_id == null or manager_id == 0 " >
+				null
+			</if>  
+            ,#{title},#{dept_id},#{salary},
+			<if test="commission_pct != '' and commission_pct != null and  commission_pct != 0 " >
+				#{commission_pct}
+			</if>       		
+			<if test="commission_pct == '' or commission_pct == null or commission_pct == 0 " >
+				null
+			</if>  
+	        )
+    </insert>
+    <update id="updateEmployee" parameterType="employeeDto">
+    	UPDATE s_emp   SET                      
+	        name=#{name}, mailid=#{mailid}  ,  start_date= #{start_date},         
+	        manager_id=#{manager_id},    title=#{title},                                  
+	        dept_id=#{dept_id},salary=#{salary}  
+	        <if test="commission_pct != '' and commission_pct != null and  commission_pct != 0 " >
+				,commission_pct=#{commission_pct} 
+			</if>
+	          <if test="commission_pct == '' or commission_pct == null or commission_pct == 0 " >
+				,commission_pct=null 
+			</if>  
+	        WHERE id=#{id}                
+    </update>
+    <delete id="deleteEmployee" parameterType="int">
+        DELETE   FROM   s_emp     WHERE id=#{id}    
+    </delete>
+     <select id="findAllDepartments" resultType="departmentDto">
+	select dept_id, name, region_id from s_dept              
+ 	</select>
+
+
+    <select id="findEmployeesByManagerId" parameterType="int"
+     resultType="employeeDto">
+      select e.id id, e.name name, e.mailid mailid, e.start_date start_date,
+ 		e.title title,  e.dept_id dept_id,  ifnull(e.salary,0.0) salary, e.MANAGER_ID manager_id            
+		    FROM s_emp e, s_emp d                               
+		    WHERE e.MANAGER_ID=d.id  
+            AND e.MANAGER_ID= #{manager_id}
+    </select>
+    
+
+      <select id="findDepartmentsBydeptid" parameterType="int" 
+     resultType="employeeDto">
+	select id, name, mailid, start_date, manager_id, title, dept_id    ,                      
+	ifnull(salary,0.0) salary, ifnull(commission_pct,0.0) commission_pct                                        
+	from s_emp WHERE DEPT_ID=#{dept_id}        
+ 	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

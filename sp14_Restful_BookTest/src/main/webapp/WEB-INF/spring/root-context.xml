@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 1. DataSource 빈 등록 -->
+	<context:property-placeholder
+		location="classpath:mybatis/jdbc.properties" />
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${JDBC.Driver}" />
+		<property name="url" value="${JDBC.ConnectionURL}" />
+		<property name="username" value="${JDBC.Username}" />
+		<property name="password" value="${JDBC.Password}" />
+	</bean>
+	<!-- 2. SqlSessionFactory 등록 -->
+	<bean id="sqlSessionFactoryBean"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:mybatis/SqlMapConfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 3. SqlSession 빈 등록 -->
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean" />
+	</bean>
+	
+	<!-- 4. DaoImpl 빈 등록 -->
+	<!-- 5. ServiceImpl 빈 등록 -->
+	<context:component-scan base-package="com.encore.rest" />
+
+</beans>

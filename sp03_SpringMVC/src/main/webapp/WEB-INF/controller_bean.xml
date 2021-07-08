@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+<!-- InternalResourceViewResolver :: prefix, suffix를 이미 컨트롤러에서 해줬다 -->
+<!-- 사용자 정의 빈만 등록하면 됨 -->
+
+<bean name="/form.do" class="com.encore.spring.controller.FormController" />
+
+<context:component-scan base-package="com.encore.spring.controller"></context:component-scan>
+
+</beans>

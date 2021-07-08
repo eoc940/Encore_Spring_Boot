@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="mybatis/jdbc.properties" />
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.encore.spring.vo.BookVO" alias="bookVO"/>
+		<typeAlias type="com.encore.spring.vo.MemberVO" alias="memberVO"/>
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="UNPOOLED">
+				<!-- DRIVEN 방식은 UNPOOLED, DATASOURCE는 POOLED -->
+				<property name="driver" value="${JDBC.Driver}" />
+				<property name="url" value="${JDBC.ConnectionURL}" />
+				<property name="username" value="${JDBC.Username}" />
+				<property name="password" value="${JDBC.Password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="mybatis/book.xml" />
+		<mapper resource="mybatis/member.xml" />
+	</mappers>
+</configuration>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

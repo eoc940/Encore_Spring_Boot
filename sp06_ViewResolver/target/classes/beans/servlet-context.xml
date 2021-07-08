@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+
+<!-- 
+ViewResolverController가 수행된 후 리턴되는 객체는 ModelAndView이다
+ModelAndView는 View 페이지 이름과 + Model(Data)에 대한 정보가 담겨있다
+
+View Page의 실질적인 물리적 위치정보를 담기 위해서 필요한 API 라이브러리 클래스가 바로 viewResolver이다
+viewResolver는 여러개의 인스턴스가 존재하는데 그 중에서 기본으로 사용되는 객체는 우리가 계속 사용해왔던 InternalResourceViewResolver이다
+
+하지만 BeanNameViewResolver 객체도 반드시 알아야 하는데
+1) 결과페이지 경로의 다각화 :: JstlView와 함께
+2) FileDownload와 Ajax 기술을 사용하려면 필수적으로 알아야 하는 기술이다 :: JstlView와 함께
+ -->
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="/response/" />
+	<property name="suffix" value=".jsp" />
+	<property name="order" value="1" />
+</bean>
+
+<!-- 
+ViewResolver 중에서 BeanNameViewResolver를 빈으로 등록한다
+우선순위를 0으로 했기 때문에 컨트롤러 ModelAndView 결과페이지 요청하는 이름을 여기서 일단 찾는다. bean name="" 이부분
+여기서 찾았는데 없다면 그 다음 우선순위 ViewResolver로 넘어가서 다시 찾는 구조이다.
+
+beanNameResolver는 결과페이지 매핑하는 부분은 따로 없고 단지 setOrder("1") 이 부분만 하면 된다(property name="order" value="0")
+결과 페이지 매핑은 JstlView에서 직접 해주기 때문이다
+ -->
+<bean id="beanNameResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+	<property name="order" value="0" />
+</bean>
+<bean name="board_result" class="org.springframework.web.servlet.view.JstlView">
+	<property name="url" value="board/result/find_ok.jsp" />
+</bean>
+
+<bean name="product_result" class="org.springframework.web.servlet.view.JstlView">
+	<property name="url" value="product/result/find_ok.jsp" />
+</bean>
+
+<context:component-scan base-package="com.encore.spring.controller"></context:component-scan>
+
+</beans>

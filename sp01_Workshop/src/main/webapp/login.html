@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+/* 특정 영역에 스타일을 적용...선택자를 지정한다	*/
+#wrap {
+	text-align:center;
+	width:500px;
+	height:200px;
+	border:1px solid black;
+	margin:0 auto;
+}
+img{
+	float:left;
+	width:200px;
+	height:200px;
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+	<img src="img/book.jpg">
+	<!-- get방식은 단순한 페이지 연결이 목적, post방식은 데이터를 넘길테니 그 데이터 처리한 결과를 응답받고 싶은 목적 -->
+	<form action="front.do" method="post">
+		<h3>로그인하여 주세요</h3>
+		<input type="hidden" name="command" value="login">
+		ID <input type="text" name="id" required="required"><br>
+		PASSWORD <input type="text" name="password" required="required"><br>
+		<!-- 태그에 이렇게 style 직접 써도 됨 -->
+		<hr style="border:1px solid gray; width:50%;">
+		<input type="submit" value="LOGIN">
+	</form>
+</div>
+</body>
+</html>
+
+

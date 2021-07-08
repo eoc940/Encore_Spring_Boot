@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	
+<mapper namespace="bookMapper">
+<!-- 
+1. ResultMap :: selectRM(id)
+2. sql구문의 재사용성 사용
+3. getItemList, getItem(특정한 아이디를 포함하는 기능...와일드카드 사용)
+ -->
+ 	
+ 	<sql id="select-book">
+		SELECT
+		isbn, title, catalogue, nation, publish_date, publisher, author, price, currency, description
+		FROM book
+	</sql>
+ 	 
+ 	 
+ 	<!-- INSERT -->	
+	<insert id="addBook" parameterType="book">
+		INSERT
+		INTO book (isbn, title, catalogue, nation, publish_date, publisher, author, price, currency, description)
+		VALUES (#{isbn}, #{title}, #{catalogue}, #{nation}, #{publishDate}, #{publisher}, #{author}, #{price}, #{currency}, #{description})
+	</insert>
+	
+	<!-- 정적쿼리 -->  
+	<select id="getBook"  parameterType="string" resultType="book">
+		<include refid="select-book"></include>
+		WHERE isbn=#{isbn}
+	</select>
+	
+	<!-- 동적쿼리 -->
+	<select id="getBookList" resultType="book">
+		<include refid="select-book"></include>
+	</select>
+	
+	
+	<select id="findByisbn" resultType="book" parameterType="string">
+		<include refid="select-book"></include>
+		WHERE isbn=#{value}
+	</select>
+	
+	<select id="findByAuthor" resultType="book" parameterType="string">
+		<include refid="select-book"></include>
+		WHERE author LIKE '%' #{value} '%'
+	</select>
+	
+	
+	<select id="findBytitle" resultType="book" parameterType="string">
+		<include refid="select-book"></include>
+		WHERE title  LIKE '%' #{value} '%'
+	</select>
+ 
+</mapper>
+	
+	

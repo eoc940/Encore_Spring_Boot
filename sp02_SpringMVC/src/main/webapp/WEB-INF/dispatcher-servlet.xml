@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 빈을 등록한다 :: 등록된 주문서를 보고 DIContainer가 컴포넌트를 생성 :: 생성된 빈들이 결과적으로 WAS에서 실행된다 -->
+
+<!-- API빈 정의 :: 결과페이지의 물리적인 위치정보와 확장자를 지정하는 빈 -->
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="/WEB-INF/results/" />
+	<property name="suffix" value=".jsp" />
+</bean>
+
+<!-- 사용자빈 정의  -->
+<bean name="/main.do" class="com.encore.spring.controller.MainController" />
+
+</beans>

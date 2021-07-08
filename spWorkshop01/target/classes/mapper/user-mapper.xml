@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	
+<mapper namespace="userMapper">
+<!-- 
+1. ResultMap :: selectRM(id)
+2. sql구문의 재사용성 사용
+3. getItemList, getItem(특정한 아이디를 포함하는 기능...와일드카드 사용)
+ -->
+ 	
+ 	<sql id="select-user">
+		SELECT
+		userId,password,name,email
+		FROM userinfo
+	</sql>
+ 	 
+	
+	<!-- 정적쿼리 -->  
+	<select id="getUser"  parameterType="string" resultType="user">
+		<include refid="select-user"></include>
+		WHERE userId=#{userId}
+	</select>
+	
+ 
+</mapper>
+	
+	

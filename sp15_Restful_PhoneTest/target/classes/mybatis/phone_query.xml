@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sql.pms.mapper">
+	<insert id="insert" parameterType="phone">
+		insert into phones
+		(num, model, price, vcode)
+		values (#{num}, #{model}, #{price},#{vcode})
+	</insert>
+	
+	<sql id="select_phone">
+		select p.num, p.model, p.price, p.vcode, c.vcode, c.vendor
+		from phones p join company c using(vcode)
+	</sql>
+	
+	<resultMap type="phone" id="phoneWithCompany"> <!-- 이렇게 해줘야 PhoneList.jsp에서 phone의 제조사 부분을 출력할 수 있다 -->
+		<id column="num" property="num"/>
+		<result column="model" property="model"/>
+		<result column="price" property="price"/>
+		<result column="vcode" property="vcode"/>
+		<association property="company" javaType="company">
+			<id column="vcode" property="vcode" />
+			<result column="vendor" property="vendor" /> 
+		</association>	
+	</resultMap>
+	
+	<!-- 동적 쿼리 작성 :: 모든 폰 조회 및 상세폰 둘 다 가능하도록 -->
+	<select id="select" parameterType="phone" resultMap="phoneWithCompany"><!-- join 사용 -->
+		<include refid="select_phone" />
+		<if test="num!=null">
+			where num=#{num}
+		</if>
+	</select>
+	
+	<!-- 동적 쿼리 작성 :: 로그인 기능과 id로 회원 검색기능 둘다 가능하도록 -->
+	<select id="selectUser" parameterType="userInfo" resultType="userInfo"><!-- Login -->
+		select id, pw
+		from userinfo
+		where id=#{id}
+		<if test="pw!=null">
+			and pw=#{pw}
+		</if>
+	</select>
+	
+	<delete id="delete" parameterType="list">
+		delete from phones
+		where num in
+		<foreach collection="list" item="num" open="(" close=")" separator=",">
+			#{num}
+		</foreach>
+	</delete>
+	<update id="update" parameterType="phone">
+		update phones
+		set model=#{model}, price=#{price}, vcode=#{vcode}
+		where num=#{num}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+

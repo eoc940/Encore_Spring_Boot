@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+
+
+	
+
+	<!--  1. id는 디비에서 자동증가되는 값  2. 그 값이 pk값 이라면 INSERT문은 반드시 아래처럼 작성 -->
+	
+<mapper namespace="BookMapper">
+
+	<sql id="select-book" >
+		SELECT
+		isbn, title, catalogue, nation, publish_date, publisher, author, price, currency, description
+		FROM book
+	</sql>
+	
+	<sql id="orderby-isbn-desc">
+		ORDER BY isbn DESC
+	</sql>
+	
+	<insert id="bookAdd" parameterType="book">
+		INSERT
+		INTO book (isbn, title, catalogue, nation, publish_date, publisher, author, price, currency, description)
+		VALUES (#{isbn}, #{title}, #{catalogue}, #{nation}, #{publishDate}, #{publisher}, #{author}, #{price}, #{currency}, #{description})
+	</insert>
+	
+	
+	<select id="findByisbn" resultType="book" parameterType="string">
+		<include refid="select-book"></include>
+		WHERE isbn=#{value}
+	</select>
+	
+	<select id="findByPublisher" resultType="book" parameterType="string">
+		<include refid="select-book"></include>
+		WHERE publisher=#{value}
+	</select>
+	
+	
+	<select id="findBytitle" resultType="book" parameterType="string">
+		<include refid="select-book"></include>
+		WHERE title=#{value}
+	</select>
+
+	
+	
+</mapper>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
